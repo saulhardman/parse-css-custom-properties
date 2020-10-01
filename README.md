@@ -25,16 +25,22 @@ import parseCssCustomProperties from 'parse-css-custom-properties';
 
 ## Installation
 
+Configure npm client:
+
+```.npmrc
+@saulhardman:registry=https://npm.pkg.github.com
+```
+
 Using npm:
 
 ```shell
-> npm install --save-dev parse-css-custom-properties
+> npm install --save-dev @saulhardman/parse-css-custom-properties
 ```
 
 Using Yarn:
 
 ```shell
-> yarn add --dev parse-css-custom-properties
+> yarn add --dev @saulhardman/parse-css-custom-properties
 ```
 
 ## Arguments
@@ -43,7 +49,7 @@ Using Yarn:
 
 Type: `Array` Default: `[]`
 
-An array of [`glob`](node-glob) patterns that match the CSS files to parse.
+An array of [`glob`][node-glob] patterns that match the CSS files to parse.
 
 ### `options`
 
@@ -55,7 +61,7 @@ Type: `Object` Default: `{ globOptions: undefined }`
 
 Type: `Object` Default: `undefined`
 
-Options passed to [`glob`](node-glob).
+Options passed to [`glob`][node-glob].
 
 ## License
 
