@@ -1,0 +1,7 @@
+node_modules/
+*.log
+
+index.cjs.js
+index.cjs.js.map
+index.es.mjs
+index.es.mjs.map
