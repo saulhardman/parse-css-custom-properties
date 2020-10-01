@@ -65,7 +65,7 @@
       "prettier --write",
       "eslint --fix"
     ],
-    "*.{json,yml,css}": "prettier --write"
+    "*.{json,yml,md,css}": "prettier --write"
   },
   "commitlint": {
     "extends": [
