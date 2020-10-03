@@ -1,5 +1,7 @@
 # Parse CSS Custom Properties
 
+[![Release Actions Status](https://github.com/saulhardman/parse-css-custom-properties/workflows/Release/badge.svg)](https://github.com/saulhardman/parse-css-custom-properties/actions)
+
 A JavaScript module to parse CSS Custom Properties from CSS files into a
 JavaScript Object.
 
