@@ -17,7 +17,7 @@ JavaScript Object.
 ```js
 import parseCssCustomProperties, {
   sync as parseCustomCssPropertiesSync,
-} from 'parse-css-custom-properties';
+} from '@saulhardman/parse-css-custom-properties';
 
 (async () => {
   const customProperties = await parseCssCustomProperties(['input.css']);
