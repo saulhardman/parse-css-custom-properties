@@ -13,23 +13,36 @@ JavaScript Object.
 ```
 
 ```js
-import parseCssCustomProperties from 'parse-css-custom-properties';
+import parseCssCustomProperties, {
+  sync as parseCustomCssPropertiesSync,
+} from 'parse-css-custom-properties';
 
 (async () => {
-  const props = await parseCssCustomProperties(['input.css']);
+  const customProperties = await parseCssCustomProperties(['input.css']);
 
-  console.log(props);
+  console.log(customProperties);
   // { '--example-custom-property': '2rem' }
 })();
+
+const customProperties = parseCustomCssPropertiesSync(['input.css']);
+
+console.log(customProperties);
+// { '--example-custom-property': '2rem' }
 ```
 
 ## Installation
 
 Configure npm client:
 
-```.npmrc
+```npmrc
+# .npmrc
 @saulhardman:registry=https://npm.pkg.github.com
 ```
+
+**Note**: If you'd like this package to be available via the
+[npm package registry](https://npmjs.com/) as well as the
+[GitHub Package Registry](https://github.com/features/packages) then please
+[create an issue](https://github.com/saulhardman/parse-css-custom-properties/issues/new).
 
 Using npm:
 

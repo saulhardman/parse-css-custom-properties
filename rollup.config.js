@@ -9,7 +9,7 @@ export default {
       file: 'index.cjs.js',
       format: 'cjs',
       sourcemap: true,
-      exports: 'default',
+      exports: 'named',
     },
 
     { file: 'index.es.mjs', format: 'es', sourcemap: true },

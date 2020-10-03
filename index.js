@@ -1,17 +1,17 @@
 import { promisify } from 'util';
 
-import asyncGlob from 'glob';
+import glob, { sync as globSync } from 'glob';
 import fsExtra from 'fs-extra';
 import postcss from 'postcss';
 
-const glob = promisify(asyncGlob);
-const { readFile } = fsExtra;
+const globAsync = promisify(glob);
+const { readFile, readFileSync } = fsExtra;
 
 const DEFAULT_OPTIONS = {
   globOptions: undefined,
 };
 
-export default async (patterns = [], { globOptions } = DEFAULT_OPTIONS) => {
+const checkArgs = ([patterns = [], options = DEFAULT_OPTIONS]) => {
   if (
     !Array.isArray(patterns) ||
     !patterns.every((pattern) => typeof pattern === 'string')
@@ -19,31 +19,73 @@ export default async (patterns = [], { globOptions } = DEFAULT_OPTIONS) => {
     throw new Error('`patterns` argument must be an `Array` of `String`s');
   }
 
-  const filepaths = (
-    await Promise.all(patterns.map((pattern) => glob(pattern, globOptions)))
-  ).flat();
+  if (typeof options !== 'object') {
+    throw new Error('`options` argument must be of type `Object`');
+  }
 
-  const customProperties = await Promise.all(
-    filepaths.map(async (filepath) => {
-      const css = await readFile(filepath, 'utf8');
-      const root = postcss.parse(css, { from: filepath });
-      const props = {};
+  return { patterns, options };
+};
 
-      root.walkRules(':root', (rule) => {
-        rule.walkDecls(/^--/, ({ prop, value }) => {
-          props[prop] = value;
-        });
-      });
+const parseCustomProperties = (css, filepath) => {
+  const root = postcss.parse(css, { from: filepath });
+  const customProperties = {};
 
-      return props;
-    }),
-  );
+  root.walkRules(':root', (rule) => {
+    rule.walkDecls(/^--/, ({ prop: name, value }) => {
+      customProperties[name] = value;
+    });
+  });
 
-  return customProperties.reduce(
+  return customProperties;
+};
+
+const mergeCustomProperties = (customProperties) =>
+  customProperties.reduce(
     (acc, props) => ({
       ...acc,
       ...props,
     }),
     {},
   );
+
+export const sync = (...args) => {
+  const {
+    patterns,
+    options: { globOptions },
+  } = checkArgs(args);
+
+  const filepaths = patterns
+    .map((pattern) => globSync(pattern, globOptions))
+    .flat();
+
+  const customPropertiesByFile = filepaths.map((filepath) => {
+    const css = readFileSync(filepath, 'utf8');
+
+    return parseCustomProperties(css, filepath);
+  });
+
+  return mergeCustomProperties(customPropertiesByFile);
+};
+
+export default async (...args) => {
+  const {
+    patterns,
+    options: { globOptions },
+  } = checkArgs(args);
+
+  const filepaths = (
+    await Promise.all(
+      patterns.map((pattern) => globAsync(pattern, globOptions)),
+    )
+  ).flat();
+
+  const customPropertiesByFile = await Promise.all(
+    filepaths.map(async (filepath) => {
+      const css = await readFile(filepath, 'utf8');
+
+      return parseCustomProperties(css, filepath);
+    }),
+  );
+
+  return mergeCustomProperties(customPropertiesByFile);
 };
