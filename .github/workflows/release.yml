@@ -18,13 +18,6 @@ jobs:
         with:
           node-version: 12
 
-      - name: Configure NPM
-        run: |
-          echo "//npm.pkg.github.com/:_authToken=$NPM_TOKEN" > .npmrc
-          echo '@saulhardman:registry=https://npm.pkg.github.com' >> .npmrc
-        env:
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
       - uses: bahmutov/npm-install@v1
 
       - run: yarn lint
