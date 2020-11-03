@@ -41,6 +41,11 @@ Configure npm client:
 @saulhardman:registry=https://npm.pkg.github.com
 ```
 
+```
+# .yarnrc
+"@saulhardman:registry" "https://npm.pkg.github.com"
+```
+
 **Note**: If you'd like this package to be available via the
 [npm package registry](https://npmjs.com/) as well as the
 [GitHub Package Registry](https://github.com/features/packages) then please
