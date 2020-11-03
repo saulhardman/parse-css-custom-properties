@@ -8,7 +8,7 @@ const globAsync = promisify(glob);
 const { readFile, readFileSync } = fsExtra;
 
 const DEFAULT_OPTIONS = {
-  globOptions: undefined,
+  globOptions: null,
 };
 
 const checkArgs = ([patterns = [], options = DEFAULT_OPTIONS]) => {
